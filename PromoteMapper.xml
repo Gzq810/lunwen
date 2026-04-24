@@ -1,0 +1,67 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.PromoteMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Promote">
+        select * from `promote`
+        <where>
+            <if test="title != null"> and title like concat('%', #{title}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `promote`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Promote" useGeneratedKeys="true">
+        insert into `promote`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="img != null">img,</if>
+            <if test="video != null">video,</if>
+            <if test="title != null">title,</if>
+            <if test="time != null">time,</if>
+            <if test="views != null">views,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="img != null">#{img},</if>
+            <if test="video != null">#{video},</if>
+            <if test="title != null">#{title},</if>
+            <if test="time != null">#{time},</if>
+            <if test="views != null">#{views},</if>
+        </trim>
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Promote">
+        update `promote`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="video != null">
+                video = #{video},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="views != null">
+                views = #{views},
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+
+</mapper>

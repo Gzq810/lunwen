@@ -1,0 +1,68 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EvaluateMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Evaluate">
+        select evaluate.*, activity.name as activityName, user.name as userName, user.avatar as userAvatar from `evaluate`
+        left join activity on evaluate.activity_id = activity.id
+        left join user on evaluate.user_id = user.id
+        <where>
+            <if test="activityName != null"> and activity.name like concat('%', #{activityName}, '%')</if>
+            <if test="userId != null"> and evaluate.user_id = #{userId}</if>
+            <if test="activityId != null"> and evaluate.activity_id = #{activityId}</if>
+        </where>
+        order by evaluate.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `evaluate`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Evaluate" useGeneratedKeys="true">
+        insert into `evaluate`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="activityId != null">activity_id,</if>
+            <if test="content != null">content,</if>
+            <if test="time != null">time,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="activityId != null">#{activityId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="time != null">#{time},</if>
+        </trim>
+
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Evaluate">
+        update `evaluate`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="activityId != null">
+                activity_id = #{activityId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+        </set>
+        where id = #{id}
+
+
+    </update>
+
+</mapper>

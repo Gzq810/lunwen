@@ -1,0 +1,79 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.HeritageMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Heritage">
+        select heritage.*, classify.name as classifyName from `heritage`
+        left join classify on heritage.classify_id = classify.id
+        <where>
+            <if test="name != null"> and heritage.name like concat('%', #{name}, '%')</if>
+            <if test="classifyId != null"> and heritage.classify_id = #{classifyId}</if>
+        </where>
+        order by heritage.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `heritage`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Heritage" useGeneratedKeys="true">
+        insert into `heritage`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="img != null">img,</if>
+            <if test="classifyId != null">classify_id,</if>
+            <if test="time != null">time,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="content != null">content,</if>
+            <if test="views != null">views,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="img != null">#{img},</if>
+            <if test="classifyId != null">#{classifyId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="content != null">#{content},</if>
+            <if test="views != null">#{views},</if>
+        </trim>
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Heritage">
+        update `heritage`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="introduce != null">
+                introduce = #{introduce},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="views != null">
+                views = #{views},
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+
+</mapper>

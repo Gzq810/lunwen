@@ -1,0 +1,83 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ActivityMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Activity">
+        select activity.* from activity
+        <where>
+            <if test="name != null"> and activity.name like concat('%', #{name}, '%')</if>
+        </where>
+        order by activity.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `activity`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Activity" useGeneratedKeys="true">
+        insert into `activity`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="img != null">img,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="content != null">content,</if>
+            <if test="num != null">num,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="img != null">#{img},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="content != null">#{content},</if>
+            <if test="num != null">#{num},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Activity">
+        update `activity`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="introduce != null">
+                introduce = #{introduce},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+
+</mapper>

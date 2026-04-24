@@ -1,0 +1,55 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CarouselMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Carousel">
+        select carousel.*, heritage.name as heritageName from `carousel`
+        left join heritage on carousel.heritage_id = heritage.id
+        <where>
+            <if test="heritageName != null"> and heritage.name like concat('%', #{heritageName}, '%')</if>
+        </where>
+        order by carousel.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `carousel`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Carousel" useGeneratedKeys="true">
+        insert into `carousel`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="heritageId != null">heritage_id,</if>
+            <if test="img != null">img,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="heritageId != null">#{heritageId},</if>
+            <if test="img != null">#{img},</if>
+        </trim>
+
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Carousel">
+        update `carousel`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="heritageId != null">
+                heritage_id = #{heritageId},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+        </set>
+        where id = #{id}
+
+
+    </update>
+
+</mapper>

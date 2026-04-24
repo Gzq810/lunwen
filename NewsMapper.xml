@@ -1,0 +1,73 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.NewsMapper">
+
+    <select id="selectAll" resultType="com.example.entity.News">
+        select news.* from `news`
+        <where>
+            <if test="title != null"> and news.title like concat('%', #{title}, '%')</if>
+        </where>
+        order by news.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `news`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.News" useGeneratedKeys="true">
+        insert into `news`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="content != null">content,</if>
+            <if test="img != null">img,</if>
+            <if test="time != null">time,</if>
+            <if test="views != null">views,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="content != null">#{content},</if>
+            <if test="img != null">#{img},</if>
+            <if test="time != null">#{time},</if>
+            <if test="views != null">#{views},</if>
+        </trim>
+
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.News">
+        update `news`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="introduce != null">
+                introduce = #{introduce},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="views != null">
+                views = #{views},
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+
+</mapper>

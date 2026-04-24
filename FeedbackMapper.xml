@@ -1,0 +1,77 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FeedbackMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Feedback">
+        select feedback.*, user.name as userName from `feedback`
+        left join user on feedback.user_id = user.id
+        <where>
+            <if test="title != null"> and feedback.title like concat('%', #{title}, '%')</if>
+            <if test="userName != null"> and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null"> and feedback.user_id = #{userId}</if>
+        </where>
+        order by feedback.id desc
+    </select>
+
+    <delete id="deleteById">
+        delete from `feedback`
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Feedback" useGeneratedKeys="true">
+        insert into `feedback`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="img != null">img,</if>
+            <if test="time != null">time,</if>
+            <if test="answer != null">answer,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="img != null">#{img},</if>
+            <if test="time != null">#{time},</if>
+            <if test="answer != null">#{answer},</if>
+        </trim>
+
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Feedback">
+        update `feedback`
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="answer != null">
+                answer = #{answer},
+            </if>
+        </set>
+        where id = #{id}
+
+
+    </update>
+
+</mapper>
